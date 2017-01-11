@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+<ImageView
+    android:id="@+id/ivBoutique"
+    android:layout_width="200dp"
+    android:layout_height="250dp"
+    android:src="@drawable/nopic"
+    android:scaleType="fitXY"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvBoutique1"
+            android:text="犯我德邦者,虽远必诛"
+            android:textSize="18sp"
+            android:textColor="#d23333"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvBoutique2"
+            android:text="即便没有坐骑,子龙亦能七进七出"
+            android:textSize="23sp"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvBoutique3"
+            android:text="没事动电脑吃屎"
+            android:textSize="18sp"
+            android:textColor="#c90f0f"/>
+    </LinearLayout>
+</LinearLayout>

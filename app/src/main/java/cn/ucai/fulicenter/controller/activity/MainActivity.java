@@ -7,13 +7,16 @@ import android.view.View;
 import android.widget.RadioButton;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 
 public class MainActivity extends AppCompatActivity {
     RadioButton rbNewGoods, rbBoutique, rbCategory, rbCart, rbPersonalCenter;
     RadioButton[] rbs =  new RadioButton[5];
     int index, currentIndex;
-
+    NewGoodsFragment mNewGoodsFragment;
+    BoutiqueFragment mBoutiqueFragment;
+    Fragment[] mFragment = new Fragment[5];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +32,16 @@ public class MainActivity extends AppCompatActivity {
         rbs[2] = rbCart;
         rbs[3] = rbCategory;
         rbs[4] = rbPersonalCenter;
-getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,new NewGoodsFragment()).commit();
+        mNewGoodsFragment = new NewGoodsFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
+        mFragment[0] = mNewGoodsFragment;
+        mFragment[1] = mBoutiqueFragment;
+getSupportFragmentManager().beginTransaction().
+        add(R.id.fragment_container,mNewGoodsFragment)
+        .add(R.id.fragment_container,mBoutiqueFragment)
+        .show(mNewGoodsFragment)
+        .hide(mBoutiqueFragment)
+        .commit();
     }
 
     public void onCheckedChange(View view) {
@@ -50,9 +62,16 @@ getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,new N
                 index = 4;
                 break;
         }
+        setFragment();
         if (index != currentIndex) {
             setRadioStatus();
         }
+
+    }
+
+    private void setFragment() {
+getSupportFragmentManager().beginTransaction().show(mFragment[index])
+        .hide(mFragment[currentIndex]).commit();
     }
 
     private void setRadioStatus() {

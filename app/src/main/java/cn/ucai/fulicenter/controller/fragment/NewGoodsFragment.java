@@ -7,14 +7,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +20,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.model.bean.NewGoodsBean;
-import cn.ucai.fulicenter.model.bean.User;
-import cn.ucai.fulicenter.model.net.IModeNewGoods;
+import cn.ucai.fulicenter.model.net.IModelNewGoods;
 import cn.ucai.fulicenter.model.net.ModerNewGoods;
 import cn.ucai.fulicenter.model.net.OnCompleteListener;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
@@ -44,10 +41,10 @@ public class NewGoodsFragment extends Fragment {
     @BindView(R.id.newgoodsrv)
     RecyclerView newgoodsrv;
   GridLayoutManager gm;
-    IModeNewGoods mModel;
+    IModelNewGoods mModel;
     GoodsAdapter mAdapter;
     int pageId;
-    LinearLayoutManager manager;
+
 
     ArrayList<NewGoodsBean> mList = new ArrayList<>();
     public NewGoodsFragment() {
@@ -121,7 +118,7 @@ public class NewGoodsFragment extends Fragment {
                                 break;
                             case ACTION_PULL_DOWN:
                                 newgoodssrl.setRefreshing(false);
-                                newgoodsrv.setVisibility(View.GONE);
+                                tvnewgoodsrsl.setVisibility(View.GONE);
                                 mAdapter.initData(list);
                                 break;
                             case ACTION_PULL_UP:

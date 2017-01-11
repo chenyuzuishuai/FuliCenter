@@ -10,7 +10,7 @@ import cn.ucai.fulicenter.model.utils.OkHttpUtils;
  * Created by yu chen on 2017/1/11.
  */
 
-public class ModerNewGoods implements IModeNewGoods {
+public class ModerNewGoods implements IModelNewGoods {
     @Override
     public void downNewGoods(Context context, int catId,
                              int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener){

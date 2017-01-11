@@ -4,10 +4,25 @@
     android:layout_height="match_parent"
     tools:context="cn.ucai.fulicenter.controller.fragment.BoutiqueFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+   <android.support.v4.widget.SwipeRefreshLayout
+       android:id="@+id/boutiquesrl"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="下拉刷新"
+           android:id="@+id/tvboutiquesrl"
+           android:gravity="center_horizontal"
+           android:textSize="20sp"
+           android:visibility="gone"
+           />
+   </android.support.v4.widget.SwipeRefreshLayout>
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/recyBoutique"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+   </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

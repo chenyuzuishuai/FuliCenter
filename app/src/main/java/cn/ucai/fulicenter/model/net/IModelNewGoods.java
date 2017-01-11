@@ -9,6 +9,6 @@ import cn.ucai.fulicenter.model.utils.OkHttpUtils;
  * Created by yu chen on 2017/1/11.
  */
 
-public interface IModeNewGoods {
+public interface IModelNewGoods {
   void  downNewGoods(Context context, int catId, int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener);
 }
