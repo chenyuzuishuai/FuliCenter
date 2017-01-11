@@ -8,8 +8,8 @@
    >
 
 
-
     <LinearLayout
+        android:id="@+id/RadioButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
@@ -65,5 +65,9 @@
             android:textColor="@color/main_botton_text_color"
             android:checked="false" />
     </LinearLayout>
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/RadioButton"
+        android:id="@+id/fragment_container"></FrameLayout>
 </RelativeLayout>
