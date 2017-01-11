@@ -9,7 +9,7 @@
         android:orientation="vertical">
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.42"
             android:scaleType="fitXY"
@@ -17,7 +17,7 @@
             android:src="@drawable/nopic"/>
         <TextView
             android:id="@+id/tvGoodsName"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="商品名称"
             android:textColor="#1a1414"
@@ -26,7 +26,7 @@
             android:minLines="2"
             />
         <TextView
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvGoodsPrice"
             android:text="$399.99"
