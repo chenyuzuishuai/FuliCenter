@@ -6,16 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
-import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
+import cn.ucai.fulicenter.model.utils.MFGT;
 
 
 /**
@@ -28,13 +30,6 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     Context mContext;
     ArrayList<BoutiqueBean> mList;
 
-    public boolean isMore() {
-        return isMore;
-    }
-
-    public void setMore(boolean more) {
-        isMore = more;
-    }
 
     public boolean isDragging() {
         return isDragging;
@@ -52,7 +47,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         this.footer = footer;
     }
 
-    boolean isMore;
+
     boolean isDragging;
     String footer;
 
@@ -68,9 +63,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View layout = null;
         switch (viewType) {
-            case TYPE_FOOTER:
-                layout = inflater.inflate(R.layout.item_footer, null);
-                return new FooterViewHolder(layout);
+
             case TYPE_BOUTIQUE:
                 layout = inflater.inflate(R.layout.boutique_adapter, null);
                 return new BoutiqueViewHolder(layout);
@@ -81,11 +74,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position)==TYPE_FOOTER) {
-           FooterViewHolder fv = (FooterViewHolder) holder;
-            fv.tvFooter.setText(getFooter());
-            return;
-        }
+
         BoutiqueViewHolder vh = (BoutiqueViewHolder) holder;
         if (holder != null) {
             vh = (BoutiqueViewHolder) holder;
@@ -94,11 +83,12 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         vh.tvBoutique1.setText(mList.get(position).getTitle());
         vh.tvBoutique2.setText(mList.get(position).getDescription());
         vh.tvBoutique3.setText(mList.get(position).getName());
+        vh.LayoutBoutiqueItem.setTag(mList.get(position).getId());
     }
 
     @Override
     public int getItemCount() {
-        return mList.size()+1;
+        return mList.size();
     }
 
     public void initData(ArrayList<BoutiqueBean> list) {
@@ -112,14 +102,6 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         this.mList.addAll(list);
         notifyDataSetChanged();
     }
-    @Override
-    public int getItemViewType(int position) {
-        if (position==getItemCount()-1){
-            return TYPE_FOOTER;
-        }
-        return TYPE_BOUTIQUE;
-    }
-
 
     static class BoutiqueViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivBoutique)
@@ -130,20 +112,18 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         TextView tvBoutique2;
         @BindView(R.id.tvBoutique3)
         TextView tvBoutique3;
+        @BindView(R.id.LayoutBoutiqueItem)
+        LinearLayout LayoutBoutiqueItem;
 
         BoutiqueViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
-    }
 
-    static class FooterViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.tvFooter)
-        TextView tvFooter;
+        @OnClick(R.id.LayoutBoutiqueItem)
+        public void onBoutiqueClick() {
+            int catId = (int) LayoutBoutiqueItem.getTag();
 
-        FooterViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
         }
     }
 }

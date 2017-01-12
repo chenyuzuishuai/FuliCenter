@@ -4,7 +4,6 @@ package cn.ucai.fulicenter.controller.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,20 +15,15 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.adapter.BoutiqueAdapter;
-import cn.ucai.fulicenter.controller.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
-import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.net.IModelBoutique;
-import cn.ucai.fulicenter.model.net.IModelNewGoods;
 import cn.ucai.fulicenter.model.net.ModelBoutique;
 import cn.ucai.fulicenter.model.net.OnCompleteListener;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
 import cn.ucai.fulicenter.model.utils.SpaceItemDecoration;
-
-import static cn.ucai.fulicenter.R.id.newgoodssrl;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +46,8 @@ public class BoutiqueFragment extends Fragment {
     SwipeRefreshLayout boutiquesrl;
     @BindView(R.id.recyBoutique)
     RecyclerView recyBoutique;
+    @BindView(R.id.tv_nomore)
+    TextView tvNomore;
 
     public BoutiqueFragment() {
         // Required empty public constructor
@@ -73,22 +69,9 @@ public class BoutiqueFragment extends Fragment {
 
     private void setListener() {
         setPullDownListener();
-        setPullUpListener();
+
     }
 
-    private void setPullUpListener() {
-        recyBoutique.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                mAdapter.setDragging(newState == RecyclerView.SCROLL_STATE_DRAGGING);
-                if (newState==RecyclerView.SCROLL_STATE_DRAGGING&&mAdapter.isMore()){
-                    pageId++;
-                    downBoutique(ACTION_PULL_UP,pageId);
-                }
-            }
-        });
-    }
 
     private void setPullDownListener() {
         boutiquesrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,8 +79,8 @@ public class BoutiqueFragment extends Fragment {
             public void onRefresh() {
                 boutiquesrl.setRefreshing(true);
                 tvboutiquesrl.setText(View.VISIBLE);
-                pageId =1;
-                downBoutique(ACTION_PULL_DOWN,pageId);
+                pageId = 1;
+                downBoutique(ACTION_PULL_DOWN, pageId);
             }
         });
 
@@ -105,20 +88,18 @@ public class BoutiqueFragment extends Fragment {
 
     private void initData() {
         pageId = 1;
-        downBoutique(ACTION_DOWNLOAD,pageId);
+        downBoutique(ACTION_DOWNLOAD, pageId);
     }
 
     private void downBoutique(final int action, int pageId) {
         mModel.downloadBoutique(getContext(), new OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
-                mAdapter.setMore(result != null && result.length > 0);
-                if (!mAdapter.isMore()){
-                    mAdapter.setFooter("没有更多数据");
-                }
+     boutiquesrl.setVisibility(View.VISIBLE);
+                tvboutiquesrl.setVisibility(View.GONE);
                 mAdapter.setFooter("上拉加载更多数据");
                 ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
-                switch (action){
+                switch (action) {
                     case ACTION_DOWNLOAD:
                         mAdapter.initData(list);
                         break;
@@ -128,8 +109,8 @@ public class BoutiqueFragment extends Fragment {
                         mAdapter.initData(list);
                         break;
                     case ACTION_PULL_UP:
-                        mAdapter.addData(list);
-                        break;
+                        boutiquesrl.setVisibility(View.GONE);
+                        tvNomore.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -151,8 +132,14 @@ public class BoutiqueFragment extends Fragment {
         lm = new LinearLayoutManager(getContext());
         recyBoutique.setLayoutManager(lm);
         recyBoutique.setHasFixedSize(true);
-        mAdapter = new BoutiqueAdapter(getContext(),mList);
+        mAdapter = new BoutiqueAdapter(getContext(), mList);
         recyBoutique.setAdapter(mAdapter);
+        boutiquesrl.setVisibility(View.GONE);
+        tvNomore.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.tv_nomore)
+    public void onClick() {
+        downBoutique(ACTION_PULL_DOWN,1);
+    }
 }
