@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,10 +23,13 @@ import cn.ucai.fulicenter.model.utils.ImageLoader;
  */
 
 public class GoodsAdapter extends RecyclerView.Adapter {
-    final int TYPE_NERGOODS = 0;
-    final int TYPE_FOOTER = 1;
-    Context mContext;
-    ArrayList<NewGoodsBean> mList;
+    final int TYPE_FOOTER = 0;
+    final int TYPE_CONTACT = 1;
+    Context context;
+    List<NewGoodsBean> mGoodsList;
+    String footer;
+    boolean isMore;
+    boolean isDragging;
 
     public boolean isMore() {
         return isMore;
@@ -33,6 +37,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
     public void setMore(boolean more) {
         isMore = more;
+        notifyDataSetChanged();
     }
 
     public boolean isDragging() {
@@ -41,6 +46,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
     public void setDragging(boolean dragging) {
         isDragging = dragging;
+        notifyDataSetChanged();
     }
 
     public String getFooter() {
@@ -49,69 +55,82 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
     public void setFooter(String footer) {
         this.footer = footer;
+        notifyDataSetChanged();
     }
 
-    boolean isMore;
-    boolean isDragging;
-    String footer;
-
-
-    public GoodsAdapter(Context context, ArrayList<NewGoodsBean> list) {
-        mContext = context;
-        mList = list;
-        this.mList.addAll(list);
+    public GoodsAdapter(Context context, List<NewGoodsBean> mGoods) {
+        this.context = context;
+        mGoodsList = new ArrayList<>();
+        this.mGoodsList.addAll(mGoods);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
         View layout = null;
-        switch (viewType) {
-            case TYPE_FOOTER:
-                layout = inflater.inflate(R.layout.item_footer, null);
-                return new FooterViewHolder(layout);
-            case TYPE_NERGOODS:
-                layout = inflater.inflate(R.layout.new_goods_adapter, null);
-                return new GoodsViewHolder(layout);
+        if (viewType == TYPE_FOOTER) {
+            layout = LayoutInflater.from(context).inflate(R.layout.item_footer, null);
+            return new FooterViewHolder(layout);
+        } else {
+            layout = LayoutInflater.from(context).inflate(R.layout.new_goods_adapter, null);
+            return new GoodsViewHolder(layout);
         }
-
-        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position)==TYPE_FOOTER) {
+        if (getItemViewType(position) == TYPE_FOOTER) {
             FooterViewHolder fv = (FooterViewHolder) holder;
             fv.tvFooter.setText(getFooter());
             return;
         }
-        GoodsViewHolder vh = (GoodsViewHolder) holder;
+        GoodsViewHolder gvh = null;
         if (holder != null) {
-            vh = (GoodsViewHolder) holder;
+            gvh = (GoodsViewHolder) holder;
         }
-        ImageLoader.downloadImg(mContext, vh.ivGoodsThume, mList.get(position).getGoodsThumb());
-        vh.tvGoodsName.setText(mList.get(position).getGoodsName());
-        vh.tvGoodsPrice.setText(mList.get(position).getCurrencyPrice());
+        NewGoodsBean goodsDetailsBean = mGoodsList.get(position);
+        ImageLoader.downloadImg(context, gvh.ivGoodsThumb, goodsDetailsBean.getGoodsThumb());
+        gvh.tvGoodName.setText(goodsDetailsBean.getGoodsName());
+        gvh.tvGoodsPrice.setText(goodsDetailsBean.getCurrencyPrice());
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == getItemCount() - 1) {
+            return TYPE_FOOTER;
+        }
+        return TYPE_CONTACT;
+    }
 
     @Override
     public int getItemCount() {
-        return mList.size()+1;
+        return mGoodsList.size() + 1;
     }
 
-    public void initData(ArrayList<NewGoodsBean> list) {
+    public void initData(ArrayList<NewGoodsBean> mList) {
         if (mList != null) {
-            this.mList.clear();
+            this.mGoodsList.clear();
         }
-        addData(list);
+        addList(mList);
     }
 
-    public void addData(ArrayList<NewGoodsBean> list) {
-        this.mList.addAll(list);
+    public void addList(ArrayList<NewGoodsBean> mList) {
+        this.mGoodsList.addAll(mList);
         notifyDataSetChanged();
     }
 
+    static class GoodsViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.ivGoodsThumb)
+        ImageView ivGoodsThumb;
+        @BindView(R.id.tvGoodName)
+        TextView tvGoodName;
+        @BindView(R.id.tvGoodsPrice)
+        TextView tvGoodsPrice;
+
+        GoodsViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
 
     static class FooterViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tvFooter)
@@ -124,25 +143,16 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     }
 
 
-    static class GoodsViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.ivGoodsThume)
-        ImageView ivGoodsThume;
-        @BindView(R.id.tvGoodsName)
-        TextView tvGoodsName;
+    /*class GoodsViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.ivGoodsThumb)
+        ImageView ivGoods;
+        @BindView(R.id.tvGoodName)
+        TextView tvGoodName;
         @BindView(R.id.tvGoodsPrice)
         TextView tvGoodsPrice;
 
-        GoodsViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        public GoodsViewHolder(View itemView) {
+            super(itemView);
         }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position==getItemCount()-1){
-            return TYPE_FOOTER;
-        }
-        return TYPE_NERGOODS;
-    }
+    }*/
 }

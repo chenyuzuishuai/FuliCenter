@@ -9,36 +9,20 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.application.I;
+import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 
-public class boutiquechildActivity extends AppCompatActivity {
+public class BoutiqueChildActivity extends AppCompatActivity {
 
-    @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
-    @BindView(R.id.tv_refresh)
-    TextView tvRefresh;
-    @BindView(R.id.rv)
-    RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_boutiquechild);
-        ButterKnife.bind(this);
-        initView();
-        setListener();
-        initData();
         super.onCreate(savedInstanceState);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container,new NewGoodsFragment())
+                .commit();
     }
 
-    private void setListener() {
-    }
 
-    private void initData() {
-
-    }
-
-    private void initView() {
-
-    }
 }

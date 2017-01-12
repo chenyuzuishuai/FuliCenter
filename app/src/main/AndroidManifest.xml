@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.activity.MainActivity" />
-        <activity android:name=".controller.activity.boutiquechildActivity"></activity>
+        <activity android:name=".controller.activity.BoutiqueChildActivity"></activity>
     </application>
 
 </manifest>

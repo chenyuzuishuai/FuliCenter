@@ -14,8 +14,5 @@ public class MFGT {
         context.overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
         context.startActivity(new Intent(context,cls));
     }
-    public static void gotoBoutiqueChildActivity(Context context,int catId){
-        Intent intent = new Intent();
 
-    }
 }

@@ -5,26 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
    android:orientation="vertical"
-    tools:context="cn.ucai.fulicenter.controller.activity.boutiquechildActivity">
+    tools:context="cn.ucai.fulicenter.controller.activity.BoutiqueChildActivity">
     <include layout="@layout/common_head_title"/>
-<android.support.v4.widget.SwipeRefreshLayout
-    android:id="@+id/srl"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"></android.support.v4.widget.SwipeRefreshLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></LinearLayout>
-    <TextView
-        android:id="@+id/tv_refresh"
-        android:text="@string/now_refresh"
-        android:textSize="18sp"
-        android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container"></FrameLayout>
+
 </LinearLayout>
