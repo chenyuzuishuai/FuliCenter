@@ -37,4 +37,5 @@ public class MFGT {
        intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId);
        startActivity((Activity)context,intent);
    }
+
 }
