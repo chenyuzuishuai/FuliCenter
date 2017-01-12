@@ -91,13 +91,13 @@
             android:layout_below="@id/tv_good_price"
             android:layout_marginTop="50dp">
 
-            <android.support.v4.widget.SlidingPaneLayout
+            <cn.ucai.fulicenter.view.SlideAutoLoopView
                 android:id="@+id/salv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/good_detail_bg_white" />
 
-            <com.lch.fulicenter.view.FlowIndicator
+            <cn.ucai.fulicenter.view.FlowIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
