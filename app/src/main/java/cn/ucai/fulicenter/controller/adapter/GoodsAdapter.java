@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -95,7 +97,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         gvh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MFGT.gotoGoodsDetail(context,mGoodsList.get(position).getGoodsId());
+                MFGT.gotoGoodsDetail(context, mGoodsList.get(position).getGoodsId());
             }
         });
     }
@@ -124,6 +126,8 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         this.mGoodsList.addAll(mList);
         notifyDataSetChanged();
     }
+
+
 
     static class GoodsViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivGoodsThumb)

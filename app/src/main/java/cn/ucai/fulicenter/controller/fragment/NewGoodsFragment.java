@@ -47,6 +47,7 @@ public class NewGoodsFragment extends Fragment {
     IModelNewGoods model;
     ArrayList<NewGoodsBean> mList;
 
+
     public NewGoodsFragment() {
         // Required empty public constructor
     }
