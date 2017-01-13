@@ -12,7 +12,10 @@ import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 
 
 public class CategoryGoodsActivity extends AppCompatActivity {
-NewGoodsFragment mNewGoodsFragment;
+    NewGoodsFragment mNewGoodsFragment;
+    boolean priceAsc = false;
+    boolean addTimeAsc = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +32,20 @@ NewGoodsFragment mNewGoodsFragment;
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_sort_price:
-       mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_ASC);
+                if (priceAsc) {
+                    mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_ASC);
+                } else {
+                    mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_DESC);
+                }
+                priceAsc = !priceAsc;
                 break;
             case R.id.btn_sort_addtime:
-                mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_ASC);
+                if (addTimeAsc) {
+                    mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_ASC);
+                } else {
+                    mNewGoodsFragment.sortGoods(I.SORT_BY_ADDTIME_DESC);
+                }
+                addTimeAsc = !addTimeAsc;
                 break;
         }
     }
