@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.controller.fragment.BoutiqueFragment;
+import cn.ucai.fulicenter.controller.fragment.CategoryFragment;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     int index, currentIndex;
     NewGoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
+    CategoryFragment mCategoryFragment;
     Fragment[] mFragment = new Fragment[5];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +31,22 @@ public class MainActivity extends AppCompatActivity {
 
         rbs[0] = rbNewGoods;
         rbs[1] = rbBoutique;
-        rbs[2] = rbCart;
-        rbs[3] = rbCategory;
+        rbs[2] = rbCategory;
+        rbs[3] = rbCart;
         rbs[4] = rbPersonalCenter;
+        mCategoryFragment = new CategoryFragment();
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutiqueFragment = new BoutiqueFragment();
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFragment;
-getSupportFragmentManager().beginTransaction().
+        mFragment[2] = mCategoryFragment;
+          getSupportFragmentManager().beginTransaction().
         add(R.id.fragment_container,mNewGoodsFragment)
         .add(R.id.fragment_container,mBoutiqueFragment)
+        .add(R.id.fragment_container,mCategoryFragment)
         .show(mNewGoodsFragment)
         .hide(mBoutiqueFragment)
+        .hide(mCategoryFragment)
         .commit();
     }
 
@@ -52,10 +58,10 @@ getSupportFragmentManager().beginTransaction().
             case R.id.layout_boutique:
                 index = 1;
                 break;
-            case R.id.layout_cart:
+            case R.id.layout_category:
                 index = 2;
                 break;
-            case R.id.layout_category:
+            case R.id.layout_cart:
                 index = 3;
                 break;
             case R.id.layout_personal_center:
