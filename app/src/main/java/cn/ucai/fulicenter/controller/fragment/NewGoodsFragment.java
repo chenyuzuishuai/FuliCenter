@@ -132,4 +132,7 @@ public class NewGoodsFragment extends Fragment {
             }
         });
     }
+    public void sortGoods(int sortBy){
+        adapter.SortGoods(sortBy);
+    }
 }
