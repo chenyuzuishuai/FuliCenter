@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.RadioButton;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.controller.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.controller.fragment.CategoryFragment;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.model.utils.MFGT;
 
 public class MainActivity extends AppCompatActivity {
     RadioButton rbNewGoods, rbBoutique, rbCategory, rbCart, rbPersonalCenter;
@@ -65,7 +67,11 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
                 break;
             case R.id.layout_personal_center:
-                index = 4;
+                if (FuLiCenterApplication.getUser()==null){
+                    MFGT.gotoLogin(this);
+                }else {
+                    index = 4;
+                }
                 break;
         }
         setFragment();
