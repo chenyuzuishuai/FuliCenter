@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -19,8 +20,12 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.activity.CategoryGoodsActivity;
+import cn.ucai.fulicenter.controller.adapter.CategoryAdapter;
 import cn.ucai.fulicenter.model.bean.CategoryChildBean;
 import cn.ucai.fulicenter.model.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.model.utils.ImageLoader;
+import cn.ucai.fulicenter.model.utils.MFGT;
 
 /**
  * Created by yu chen on 2017/1/16.
@@ -30,14 +35,28 @@ public class CateFilterButton extends Button {
     boolean isExpan;
     Context mContext;
     PopupWindow mPopupWindow;
-
+    CateFliterApdater adapter;
+    GridView mGridView;
+    String groupName;
     public CateFilterButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext=context;
     }
 
-    public void initCateFilter(String groupName, ArrayList<CategoryGroupBean> list) {
+    public void initCateFilter(String groupName, ArrayList<CategoryChildBean> list) {
+        this.groupName = groupName;
         this.setText(groupName);
         setCateFilterButtonListener();
+        adapter = new CateFliterApdater(mContext,list);
+        initGridView();
+    }
+
+    private void initGridView() {
+        mGridView = new GridView(mContext);
+        mGridView.setVerticalSpacing(10);
+        mGridView.setHorizontalSpacing(10);
+        mGridView.setNumColumns(mGridView.AUTO_FIT);
+        mGridView.setAdapter(adapter);
     }
 
     private void setCateFilterButtonListener() {
@@ -61,9 +80,8 @@ public class CateFilterButton extends Button {
         mPopupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xbb000000));
-        TextView textView = new TextView(mContext);
-        textView.setText("GOGOGO");
-        mPopupWindow.setContentView(textView);
+
+        mPopupWindow.setContentView(mGridView);
         mPopupWindow.showAsDropDown(this);
     }
 
@@ -113,6 +131,7 @@ public class CateFilterButton extends Button {
             }else {
                 vh = (CateFliterViewHolder) view.getTag();
             }
+            vh.bind(position);
             return view;
         }
 
@@ -127,6 +146,24 @@ public class CateFilterButton extends Button {
             CateFliterViewHolder(View view) {
                 ButterKnife.bind(this, view);
             }
-        }
+
+             public void bind(final int position) {
+                 ImageLoader.downloadImg(context,ivCategoryChildThume,
+                         list.get(position).getImageUrl()
+                 );
+                 tvCategoryChildName.setText(list.get(position).getName());
+                 layoutCategoryChild.setOnClickListener(new OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         MFGT.gotoCategoryGoods(mContext,
+                             list.get(position).getId(),
+                                 groupName,
+                                 list
+                                 );
+                         MFGT.finish((CategoryGoodsActivity)mContext);
+                     }
+                 });
+             }
+         }
     }
 }

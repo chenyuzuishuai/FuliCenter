@@ -8,12 +8,15 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.model.bean.CategoryChildBean;
 import cn.ucai.fulicenter.model.utils.MFGT;
 import cn.ucai.fulicenter.view.CateFilterButton;
 
@@ -47,7 +50,8 @@ public class CategoryGoodsActivity extends AppCompatActivity {
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .commit();
         String groupName = getIntent().getStringExtra(I.CategoryGroup.NAME);
-        buttonCateFilter.initCateFilter(groupName, null);
+       ArrayList<CategoryChildBean> list = (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.DATA);
+        buttonCateFilter.initCateFilter(groupName, list);
     }
 
 
