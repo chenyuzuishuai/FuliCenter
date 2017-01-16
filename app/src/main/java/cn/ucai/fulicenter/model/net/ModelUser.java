@@ -26,7 +26,7 @@ public class ModelUser implements IModelUser {
     @Override
     public void register(Context context, String username, String userNick, String password, OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(context);
-        utils.setRequestUrl(I.REQUEST_LOGIN)
+        utils.setRequestUrl(I.REQUEST_REGISTER)
                 .addParam(I.User.USER_NAME,username)
                 .addParam(I.User.NICK,userNick)
                 .addParam(I.User.PASSWORD, MD5.getMessageDigest(password))
