@@ -78,4 +78,6 @@ public class PersonalCenterFragment extends Fragment {
     public void settings() {
         MFGT.gotoSettings(getActivity());
     }
+
+
 }
