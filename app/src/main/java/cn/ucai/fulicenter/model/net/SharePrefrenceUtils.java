@@ -30,6 +30,6 @@ public class SharePrefrenceUtils {
     }
 
     public void removeUser(){
-
+preferences.edit().remove(SHARE_PREFRENCE_NAME_USERNAME).commit();
     }
 }

@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="#b90a0a"
-    >
+    android:background="#b90a0a">
     <LinearLayout
         android:orientation="horizontal"
         android:paddingTop="8dp"

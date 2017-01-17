@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.controller.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +10,16 @@ import android.widget.RadioButton;
 
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
+import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.controller.fragment.CategoryFragment;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.controller.fragment.PersonalCenterFragment;
+import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.model.utils.MFGT;
 
 public class MainActivity extends AppCompatActivity {
+
     RadioButton rbNewGoods, rbBoutique, rbCategory, rbCart, rbPersonalCenter;
     RadioButton[] rbs = new RadioButton[5];
     int index, currentIndex;
@@ -110,5 +114,22 @@ public class MainActivity extends AppCompatActivity {
         currentIndex = index;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        L.e("TAG","onResume,currentIndex="+currentIndex+",index"+index
+        +",user="+FuLiCenterApplication.getUser());
+        setRadioStatus();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        L.e("TAG","onActivityResult,resultCode"+requestCode+",requestCode="+requestCode);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_OK && requestCode== I.REQUEST_CODE_LOGIN){
+            index =4;
+            setFragment();
+            setRadioStatus();
+        }
+    }
 }
