@@ -21,16 +21,18 @@ import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.model.bean.Result;
 import cn.ucai.fulicenter.model.bean.User;
+import cn.ucai.fulicenter.model.dao.UserDao;
 import cn.ucai.fulicenter.model.net.IModelUser;
 import cn.ucai.fulicenter.model.net.ModelUser;
 import cn.ucai.fulicenter.model.net.OnCompleteListener;
+import cn.ucai.fulicenter.model.net.SharePrefrenceUtils;
 import cn.ucai.fulicenter.model.utils.CommonUtils;
 import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.model.utils.MFGT;
 import cn.ucai.fulicenter.model.utils.ResultUtils;
 
 public class LoginActivity extends AppCompatActivity {
-IModelUser model;
+    IModelUser model;
     private static final String TAG = LoginActivity.class.getSimpleName();
     @BindView(R.id.ivback)
     ImageView ivback;
@@ -83,21 +85,21 @@ IModelUser model;
     private void checkInput() {
         String username = etUserName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        if (TextUtils.isEmpty(username)){
+        if (TextUtils.isEmpty(username)) {
             etUserName.setError(getString(R.string.user_name_connot_be_empty));
             etUserName.requestFocus();
-        }else if (TextUtils.isEmpty(password)){
+        } else if (TextUtils.isEmpty(password)) {
             etPassword.setError(getString(R.string.password_connot_be_empty));
             etPassword.requestFocus();
-        }else {
-            login(username,password);
+        } else {
+            login(username, password);
         }
     }
 
     private void login(String username, String password) {
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage(getString(R.string.logining));
-       model = new ModelUser();
+        model = new ModelUser();
         model.login(this, username, password, new OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
@@ -107,6 +109,8 @@ IModelUser model;
                     if (result != null) {
                         if (result.isRetMsg()) {
                             User user = (User) result.getRetData();
+                            boolean saveUser = UserDao.getInstance().savaUser(user);
+                            SharePrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
                             FuLiCenterApplication.setUser(user);
                             MFGT.finish(LoginActivity.this);
                         } else {
@@ -120,7 +124,7 @@ IModelUser model;
                     } else {
                         CommonUtils.showLongToast(getString(R.string.login_fail));
                     }
-                }else {
+                } else {
                     CommonUtils.showLongToast(getString(R.string.login_fail));
                 }
                 dialog.dismiss();
@@ -128,8 +132,8 @@ IModelUser model;
 
             @Override
             public void onError(String error) {
-  dialog.dismiss();
-                Log.e(TAG,"error"+error);
+                dialog.dismiss();
+                Log.e(TAG, "error" + error);
             }
         });
     }
