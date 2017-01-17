@@ -24,6 +24,7 @@ import cn.ucai.fulicenter.model.net.OnCompleteListener;
 import cn.ucai.fulicenter.model.utils.CommonUtils;
 import cn.ucai.fulicenter.model.utils.MFGT;
 import cn.ucai.fulicenter.model.utils.ResultUtils;
+import cn.ucai.fulicenter.view.DisplayUtils;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -44,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        DisplayUtils.initBackWithTitle(this,"用户注册");
     }
 
     @OnClick({R.id.ivReturn, R.id.iv_avatar, R.id.btnRegister})
