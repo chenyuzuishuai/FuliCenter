@@ -29,6 +29,9 @@ public class UserDao {
         return instance;
     }
     public boolean savaUser(User user) {
-        return DBManager.getInstance().savUser(user);
+        return DBManager.getInstance().saveUser(user);
+    }
+    public User getUser(String username){
+        return DBManager.getInstance().getUser(username);
     }
 }

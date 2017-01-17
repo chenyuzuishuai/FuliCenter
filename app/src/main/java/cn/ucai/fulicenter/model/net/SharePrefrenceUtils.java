@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
  */
 
 public class SharePrefrenceUtils {
+
     private static final String SHARE_PREFRENCE_NAME = "cn.user.fulicenter_user";
     private static  final String SHARE_PREFRENCE_NAME_USERNAME ="cn.user.fulicenter_user_username";
     private static SharePrefrenceUtils instance;
@@ -21,12 +22,13 @@ public class SharePrefrenceUtils {
         }
         return  instance;
     }
-    public static void saveUser(String username){
+    public  void saveUser(String username){
         preferences.edit().putString(SHARE_PREFRENCE_NAME_USERNAME,username).commit();
     }
-    public static String getUser(){
+    public  String getUser(){
         return preferences.getString(SHARE_PREFRENCE_NAME_USERNAME,null);
     }
+
     public void removeUser(){
 
     }
