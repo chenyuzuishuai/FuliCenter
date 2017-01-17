@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.controller.activity;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,13 +17,14 @@ import cn.ucai.fulicenter.model.utils.MFGT;
 
 public class MainActivity extends AppCompatActivity {
     RadioButton rbNewGoods, rbBoutique, rbCategory, rbCart, rbPersonalCenter;
-    RadioButton[] rbs =  new RadioButton[5];
+    RadioButton[] rbs = new RadioButton[5];
     int index, currentIndex;
     NewGoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
     PersonalCenterFragment mPersonalCenterFragment;
     Fragment[] mFragment = new Fragment[5];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +47,16 @@ public class MainActivity extends AppCompatActivity {
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFragment;
         mFragment[2] = mCategoryFragment;
-        mFragment[4]=mCategoryFragment;
-          getSupportFragmentManager().beginTransaction().
-        add(R.id.fragment_container,mNewGoodsFragment)
-        .add(R.id.fragment_container,mBoutiqueFragment)
-        .add(R.id.fragment_container,mCategoryFragment)
-        .show(mNewGoodsFragment)
-        .hide(mBoutiqueFragment)
-        .hide(mCategoryFragment)
-        .commit();
+        mFragment[4] = mPersonalCenterFragment;
+        getSupportFragmentManager().beginTransaction().
+                add(R.id.fragment_container, mNewGoodsFragment)
+                .add(R.id.fragment_container, mBoutiqueFragment)
+                .add(R.id.fragment_container, mCategoryFragment)
+                .show(mNewGoodsFragment)
+                .hide(mBoutiqueFragment)
+                .hide(mCategoryFragment)
+                .hide(mPersonalCenterFragment)
+                .commit();
     }
 
     public void onCheckedChange(View view) {
@@ -71,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
                 break;
             case R.id.layout_personal_center:
-                if (FuLiCenterApplication.getUser()==null){
+                if (FuLiCenterApplication.getUser() == null) {
                     MFGT.gotoLogin(this);
-                }else {
+                } else {
                     index = 4;
                 }
                 break;
@@ -81,13 +84,19 @@ public class MainActivity extends AppCompatActivity {
         setFragment();
         if (index != currentIndex) {
             setRadioStatus();
+        }else {
+            getSupportFragmentManager().beginTransaction().show(mFragment[index]).commit();
         }
 
     }
 
     private void setFragment() {
-getSupportFragmentManager().beginTransaction().show(mFragment[index])
-        .hide(mFragment[currentIndex]).commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(mFragment[currentIndex]);
+        if (!mFragment[index].isAdded()){
+           ft.add(R.id.fragment_container,mFragment[index]);
+        }
+        ft.show(mFragment[index]).commit();
     }
 
     private void setRadioStatus() {
