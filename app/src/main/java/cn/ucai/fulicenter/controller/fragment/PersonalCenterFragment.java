@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.controller.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,9 +18,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
+import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
 import cn.ucai.fulicenter.model.utils.MFGT;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,6 +70,12 @@ public class PersonalCenterFragment extends Fragment {
         } else {
             MFGT.finish(getActivity());
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initDate();
     }
 
     private void loadUserInfo(User user) {

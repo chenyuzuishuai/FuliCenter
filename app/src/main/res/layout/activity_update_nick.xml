@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_update_nick"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+<RelativeLayout
+    android:background="@color/btn_blue_pressed"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/back"/>
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="更改昵称"
+        android:textSize="30dp"
+        android:textColor="#000"/>
+</RelativeLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/new_nick"
+        android:text="请输入新昵称"
+        android:textSize="20dp"/>
+    <Button
+        android:id="@+id/bt_update_nick"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="确认更改昵称"
+        android:background="@color/btn_blue_pressed"/>
+</LinearLayout>
