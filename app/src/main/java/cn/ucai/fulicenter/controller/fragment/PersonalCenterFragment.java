@@ -68,7 +68,7 @@ public class PersonalCenterFragment extends Fragment {
         if (user != null) {
             loadUserInfo(user);
         } else {
-            MFGT.finish(getActivity());
+            //MFGT.finish(getActivity());
         }
     }
 

@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         setFragment();
         if (index != currentIndex) {
             setRadioStatus();
-        }else {
+        } else {
             getSupportFragmentManager().beginTransaction().show(mFragment[index]).commit();
         }
 
@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
     private void setFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.hide(mFragment[currentIndex]);
-        if (!mFragment[index].isAdded()){
-           ft.add(R.id.fragment_container,mFragment[index]);
+        if (!mFragment[index].isAdded()) {
+            ft.add(R.id.fragment_container, mFragment[index]);
         }
         ft.show(mFragment[index]).commit();
     }
@@ -117,20 +117,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        L.e("TAG","onResume,currentIndex="+currentIndex+",index"+index
-        +",user="+FuLiCenterApplication.getUser());
-        if (index==4 && FuLiCenterApplication.getUser()==null){
-           index =0;
+        L.e("TAG", "onResume,currentIndex=" + currentIndex + ",index" + index
+                + ",user=" + FuLiCenterApplication.getUser());
+        if (index == 4 && FuLiCenterApplication.getUser() == null) {
+            index = 0;
         }
         setRadioStatus();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        L.e("TAG","onActivityResult,resultCode"+requestCode+",requestCode="+requestCode);
+        L.e("TAG", "onActivityResult,resultCode" + requestCode + ",requestCode=" + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK && requestCode== I.REQUEST_CODE_LOGIN){
-            index =4;
+        if (requestCode == RESULT_OK && requestCode == I.REQUEST_CODE_LOGIN) {
+            index = 4;
             setFragment();
             setRadioStatus();
         }

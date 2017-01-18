@@ -20,6 +20,7 @@ import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.net.IModelGoodsDetails;
 import cn.ucai.fulicenter.model.net.ModelGoodsDetails;
 import cn.ucai.fulicenter.model.net.OnCompleteListener;
+import cn.ucai.fulicenter.model.utils.CommonUtils;
 import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.model.utils.MFGT;
 import cn.ucai.fulicenter.view.FlowIndicator;
@@ -119,6 +120,35 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         super.onResume();
         initCollectStatus();
     }
+    @OnClick(R.id.iv_good_collect)
+    public void setCollectListener() {
+        User user = FuLiCenterApplication.getUser();
+        if (user != null) {
+         setCollect(user);
+        } else {
+            MFGT.gotoLogin(this);
+        }
+    }
+
+    private void setCollect(User user) {
+        model.setCollect(this, goodsId, user.getMuserName(),
+                isCollect?I.ACTION_DELETE_COLLECT : I.ACTION_ADD_COLLECT,
+                new OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result!=null&& result.isSuccess()){
+                            isCollect = !isCollect;
+                            setCollectStatus();
+                            CommonUtils.showLongToast(result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+    }
 
     private void setCollectStatus() {
         if (isCollect) {
@@ -141,7 +171,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                         isCollect = false;
                     }
                     setCollectStatus();
-                    // setCollect = false;
+
                 }
 
                 @Override
@@ -153,13 +183,5 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.iv_good_collect)
-    public void setCollectListener() {
-        User user = FuLiCenterApplication.getUser();
-        if (user !=null){
 
-        }else {
-            MFGT.gotoLogin(this);
-        }
-    }
 }
