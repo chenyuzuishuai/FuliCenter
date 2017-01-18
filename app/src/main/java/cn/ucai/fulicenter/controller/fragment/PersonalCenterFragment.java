@@ -1,9 +1,9 @@
 package cn.ucai.fulicenter.controller.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +18,21 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
-import cn.ucai.fulicenter.application.I;
+import cn.ucai.fulicenter.model.bean.MessageBean;
 import cn.ucai.fulicenter.model.bean.User;
+import cn.ucai.fulicenter.model.net.IModelUser;
+import cn.ucai.fulicenter.model.net.ModelUser;
+import cn.ucai.fulicenter.model.net.OnCompleteListener;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
+import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.model.utils.MFGT;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PersonalCenterFragment extends Fragment {
-
-
+    private static final String TAG = PersonalCenterFragment.class.getSimpleName();
+    IModelUser model;
     @BindView(R.id.iv_user_avatar)
     ImageView ivUserAvatar;
     @BindView(R.id.tv_user_name)
@@ -47,6 +49,8 @@ public class PersonalCenterFragment extends Fragment {
     LinearLayout llUserStore;
     @BindView(R.id.ll_user_members)
     LinearLayout llUserMembers;
+    @BindView(R.id.tv_collect_count)
+    TextView tvCollectCount;
 
     public PersonalCenterFragment() {
         // Required empty public constructor
@@ -67,6 +71,7 @@ public class PersonalCenterFragment extends Fragment {
         User user = FuLiCenterApplication.getUser();
         if (user != null) {
             loadUserInfo(user);
+            getCollectCount();
         } else {
             //MFGT.finish(getActivity());
         }
@@ -82,6 +87,31 @@ public class PersonalCenterFragment extends Fragment {
         //ImageLoader.downloadImg(getContext(),ivUserAvatar,user.getAvatarPath());
         ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), getContext(), ivUserAvatar);
         tvUserName.setText(user.getMuserNick());
+        loadCollectCount("0");
+    }
+    private void getCollectCount(){
+        model = new ModelUser();
+        model.collectCount(getContext(), FuLiCenterApplication.getUser().getMuserName(), new OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                L.e(TAG,"result="+result);
+                if (result!=null&&result.isSuccess()){
+                    loadCollectCount(result.getMsg());
+                }else {
+                    loadCollectCount("0");
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                L.e(TAG,"error="+error);
+                loadCollectCount("0");
+            }
+        });
+    }
+
+    private void loadCollectCount(String count) {
+       tvCollectCount.setText(String.valueOf(count));
     }
 
     @OnClick({R.id.tv_center_settings, R.id.center_user_info})

@@ -127,6 +127,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
          setCollect(user);
         } else {
             MFGT.gotoLogin(this);
+            ivGoodCollect.setEnabled(true);
         }
     }
 
@@ -145,7 +146,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String error) {
-
+                 ivGoodCollect.setEnabled(true);
                     }
                 });
     }
