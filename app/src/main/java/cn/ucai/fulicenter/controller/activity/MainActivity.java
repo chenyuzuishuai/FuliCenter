@@ -12,6 +12,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.fragment.BoutiqueFragment;
+import cn.ucai.fulicenter.controller.fragment.CartFragment;
 import cn.ucai.fulicenter.controller.fragment.CategoryFragment;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.controller.fragment.PersonalCenterFragment;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     NewGoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
+    CartFragment mCartFragment;
     PersonalCenterFragment mPersonalCenterFragment;
     Fragment[] mFragment = new Fragment[5];
 
@@ -47,10 +49,12 @@ public class MainActivity extends AppCompatActivity {
         mCategoryFragment = new CategoryFragment();
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutiqueFragment = new BoutiqueFragment();
+        mCartFragment = new CartFragment();
         mPersonalCenterFragment = new PersonalCenterFragment();
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFragment;
         mFragment[2] = mCategoryFragment;
+        mFragment[3] = mCartFragment;
         mFragment[4] = mPersonalCenterFragment;
         getSupportFragmentManager().beginTransaction().
                 add(R.id.fragment_container, mNewGoodsFragment)
@@ -75,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 index = 2;
                 break;
             case R.id.layout_cart:
-                index = 3;
+                if (FuLiCenterApplication.getUser()==null){
+                    MFGT.gotoLogin(this,I.REQUEST_CODE_LOGIN_FROM_CART);
+                }else {
+                    index = 3;
+                }
                 break;
             case R.id.layout_personal_center:
                 if (FuLiCenterApplication.getUser() == null) {
@@ -129,10 +137,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         L.e("TAG", "onActivityResult,resultCode" + requestCode + ",requestCode=" + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK && requestCode == I.REQUEST_CODE_LOGIN) {
-            index = 4;
+        if (requestCode == RESULT_OK ) {
+            if (requestCode == I.REQUEST_CODE_LOGIN) {
+                index = 4;
+            }
+            if (requestCode == I.REQUEST_CODE_LOGIN_FROM_CART) {
+                index = 3;
+            }
+
+        }
             setFragment();
             setRadioStatus();
-        }
     }
 }
