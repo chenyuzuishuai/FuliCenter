@@ -20,6 +20,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.adapter.BoutiqueAdapter;
+import cn.ucai.fulicenter.controller.adapter.CartAdapter;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
 import cn.ucai.fulicenter.model.bean.CartBean;
 import cn.ucai.fulicenter.model.bean.User;
@@ -42,7 +43,7 @@ public class CartFragment extends Fragment {
     LinearLayoutManager lm;
     User user;
     IModelUser model;
-    //CartAdapter mAdapter;
+   CartAdapter mAdapter;
     ArrayList<CartBean> cartList = new ArrayList<>();
 
     @BindView(R.id.rv)
@@ -85,7 +86,8 @@ public class CartFragment extends Fragment {
         rv.addItemDecoration(new SpaceItemDecoration(12));
         rv.setLayoutManager(lm);
         rv.setHasFixedSize(true);
-
+        mAdapter = new CartAdapter(getContext(),new ArrayList<CartBean>());
+        rv.setAdapter(mAdapter);
         srl.setVisibility(View.GONE);
         tvNothing.setVisibility(View.VISIBLE);
     }
@@ -106,7 +108,7 @@ public class CartFragment extends Fragment {
     }
 
     private void initData(final int action) {
-        if (user !=null) {
+        if (user ==null) {
             MFGT.gotoLogin(getActivity());
         }else {
             model.getCart(getContext(), user.getMuserName(), new OnCompleteListener<CartBean[]>() {
@@ -121,9 +123,9 @@ public class CartFragment extends Fragment {
                         L.e("CartFragment","list.size"+list.size());
                         cartList.addAll(list);
                         if (action == I.ACTION_DOWNLOAD || action ==I.ACTION_PULL_DOWN){
-                            //mAdapter.initData(list);
+                            mAdapter.initData(list);
                         }else {
-                           // mAdapter.addData(list);
+                           mAdapter.addData(list);
                         }
                     }else {
                         srl.setVisibility(View.GONE);
@@ -142,5 +144,9 @@ public class CartFragment extends Fragment {
                 }
             });
         }
+    }
+    @OnClick(R.id.tv_nothing)
+    public void onClick() {
+        initData(I.ACTION_DOWNLOAD);
     }
 }
