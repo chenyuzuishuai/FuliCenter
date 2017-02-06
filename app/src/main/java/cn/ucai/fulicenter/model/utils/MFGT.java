@@ -14,6 +14,7 @@ import cn.ucai.fulicenter.controller.activity.CategoryGoodsActivity;
 import cn.ucai.fulicenter.controller.activity.CollectsActivity;
 import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.controller.activity.LoginActivity;
+import cn.ucai.fulicenter.controller.activity.OrderActivity;
 import cn.ucai.fulicenter.controller.activity.RegisterActivity;
 import cn.ucai.fulicenter.controller.activity.SettingsActivity;
 import cn.ucai.fulicenter.controller.activity.UpdateNickActivity;
@@ -76,5 +77,10 @@ public class MFGT {
 
     public static void gotoCollects(Activity activity ) {
         startActivity(activity, CollectsActivity.class);
+    }
+    public static void gotoOrder(Activity activity,int payPrice){
+        Intent intent = new Intent(activity, OrderActivity.class);
+        intent.putExtra(I.Cart.PAY_PRICE,payPrice);
+        startActivity(activity,intent);
     }
 }

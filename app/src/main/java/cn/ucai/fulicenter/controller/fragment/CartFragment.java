@@ -50,6 +50,8 @@ public class CartFragment extends Fragment {
     User user;
     IModelUser model;
    CartAdapter mAdapter;
+    int sum = 0;
+    int payPrice = 0;
     ArrayList<CartBean> cartList = new ArrayList<>();
     UpdateCartReceiver mReceiver;
 
@@ -167,8 +169,9 @@ public class CartFragment extends Fragment {
     }
 
     private  void setPrice(){
-        int sum = 0;
+         sum = 0;
         int save = 0;
+        payPrice = 0;
      if (cartList !=null&& cartList.size()>0){
       for (CartBean cart : cartList){
           GoodsDetailsBean goods = cart.getGoods();
@@ -182,6 +185,7 @@ public class CartFragment extends Fragment {
         tvCartSumPrice.setText("合计: ￥" +sum);
         tvCartSavePrice.setText("节省: ￥" + save);
         mAdapter.notifyDataSetChanged();
+        payPrice = sum - save;
     }
     int getPrice(String price){
         int p = 0;
@@ -195,7 +199,15 @@ public class CartFragment extends Fragment {
            setPrice();
        }
    }
-
+    @OnClick(R.id.tv_cart_buy)
+    public void onBuyClick(){
+        if (sum>0){
+         L.e(TAG,"sum="+sum);
+            MFGT.gotoOrder(getActivity(),payPrice);
+        }else {
+            CommonUtils.showLongToast(R.string.order_nothing);
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
