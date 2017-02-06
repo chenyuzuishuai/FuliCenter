@@ -242,8 +242,8 @@ public class OkHttpUtils<T> {
     /**
      * 添加请求参数至url，包括GET和POST请求
      * 不包括POST请求中上传文件的同时向Form中添加其它参数的情况
-     * @param key:键
-     * @param value：值
+     * @param key :键
+     * @param value ：值
      */
     public OkHttpUtils<T> addParam(String key, String value) {
         try {
