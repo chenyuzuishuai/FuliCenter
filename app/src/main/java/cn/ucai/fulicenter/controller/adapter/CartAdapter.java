@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.controller.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.model.bean.CartBean;
 import cn.ucai.fulicenter.model.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
@@ -28,8 +31,7 @@ public class CartAdapter extends RecyclerView.Adapter {
 
     public CartAdapter(Context context, ArrayList<CartBean> mList) {
         mContext = context;
-        this.mList = new ArrayList<>();
-        this.mList.addAll(mList);
+        this.mList = mList;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class CartAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mList!=null?mList.size():0;
     }
 
     public void initData(ArrayList<CartBean> list) {
@@ -72,6 +74,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         TextView tvGoodsPrice;
         @BindView(R.id.chkSelect)
         CheckBox chkSelect;
+        int listPosition;
 
         CartViewHolder(View view) {
             super(view);
@@ -79,6 +82,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         }
 
         public void bind(int position) {
+            listPosition = position;
             GoodsDetailsBean detailsBean = mList.get(position).getGoods();
             if (detailsBean != null) {
                 ImageLoader.downloadImg(mContext, ivGoodsThumb, detailsBean.getGoodsThumb());
@@ -87,6 +91,11 @@ public class CartAdapter extends RecyclerView.Adapter {
             }
             tvCartCount.setText("(" + mList.get(position).getCount() + ")");
             chkSelect.setChecked(false);
+        }
+        @OnCheckedChanged(R.id.chkSelect)
+        public void checkListener(boolean checked){
+     mList.get(listPosition).setChecked(checked);
+            mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
         }
     }
 }

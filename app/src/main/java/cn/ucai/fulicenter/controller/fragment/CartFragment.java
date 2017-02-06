@@ -1,6 +1,10 @@
 package cn.ucai.fulicenter.controller.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
@@ -23,6 +28,7 @@ import cn.ucai.fulicenter.controller.adapter.BoutiqueAdapter;
 import cn.ucai.fulicenter.controller.adapter.CartAdapter;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
 import cn.ucai.fulicenter.model.bean.CartBean;
+import cn.ucai.fulicenter.model.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.net.IModelBoutique;
 import cn.ucai.fulicenter.model.net.IModelUser;
@@ -45,6 +51,7 @@ public class CartFragment extends Fragment {
     IModelUser model;
    CartAdapter mAdapter;
     ArrayList<CartBean> cartList = new ArrayList<>();
+    UpdateCartReceiver mReceiver;
 
     @BindView(R.id.rv)
     RecyclerView rv;
@@ -86,13 +93,16 @@ public class CartFragment extends Fragment {
         rv.addItemDecoration(new SpaceItemDecoration(12));
         rv.setLayoutManager(lm);
         rv.setHasFixedSize(true);
-        mAdapter = new CartAdapter(getContext(),new ArrayList<CartBean>());
+        mAdapter = new CartAdapter(getContext(),cartList);
         rv.setAdapter(mAdapter);
         srl.setVisibility(View.GONE);
         tvNothing.setVisibility(View.VISIBLE);
     }
 
     private void setReceiverListener() {
+        mReceiver = new UpdateCartReceiver();
+        IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
+        getContext().registerReceiver(mReceiver,filter);
     }
 
     private void setPullDownListener() {
@@ -148,5 +158,48 @@ public class CartFragment extends Fragment {
     @OnClick(R.id.tv_nothing)
     public void onClick() {
         initData(I.ACTION_DOWNLOAD);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setPrice();
+    }
+
+    private  void setPrice(){
+        int sum = 0;
+        int save = 0;
+     if (cartList !=null&& cartList.size()>0){
+      for (CartBean cart : cartList){
+          GoodsDetailsBean goods = cart.getGoods();
+          if (cart.isChecked()&&goods!=null){
+              sum += cart.getCount() *getPrice(goods.getCurrencyPrice());
+              save += cart.getCount() * (getPrice(goods.getCurrencyPrice())-getPrice(goods.getRankPrice()));
+              goods.getRankPrice();
+          }
+      }
+     }
+        tvCartSumPrice.setText("合计: ￥" +sum);
+        tvCartSavePrice.setText("节省: ￥" + save);
+    }
+    int getPrice(String price){
+        int p = 0;
+        p = Integer.valueOf(price.substring(price.indexOf("￥")+1));
+        return p;
+    }
+   class UpdateCartReceiver extends BroadcastReceiver{
+
+       @Override
+       public void onReceive(Context context, Intent intent) {
+           setPrice();
+       }
+   }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mReceiver !=null){
+            getContext().unregisterReceiver(mReceiver);
+        }
     }
 }
