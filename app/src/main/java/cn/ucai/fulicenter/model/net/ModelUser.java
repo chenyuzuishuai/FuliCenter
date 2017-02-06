@@ -83,4 +83,10 @@ public class ModelUser implements IModelUser {
                 .targetClass(CollectBean[].class)
                 .execute(listener);
     }
+
+    @Override
+    public void setCollect(Context mContext, int goodsId, String muserName, int actionDeleteCollect, OnCompleteListener<MessageBean> listener) {
+
+
+    }
 }

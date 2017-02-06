@@ -28,6 +28,9 @@ public class CollectBean implements Serializable{
     private String goodsImg;
     private long addTime;
 
+    public CollectBean(int goodsId) {
+    }
+
     public int getId() {
         return id;
     }

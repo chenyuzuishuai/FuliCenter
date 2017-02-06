@@ -23,4 +23,6 @@ public interface IModelUser {
     void uploadAvatar(Context context, String username, File file,OnCompleteListener<String> listener);
     void collectCount(Context context,String username, OnCompleteListener<MessageBean> listener);
     void getCollects(Context context, String username , int pageId, int pageSize, OnCompleteListener<CollectBean[]> listener);
+
+    void setCollect(Context mContext, int goodsId, String muserName, int actionDeleteCollect, OnCompleteListener<MessageBean> listener);
 }
