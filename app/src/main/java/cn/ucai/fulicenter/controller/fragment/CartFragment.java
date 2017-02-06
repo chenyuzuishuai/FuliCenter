@@ -181,6 +181,7 @@ public class CartFragment extends Fragment {
      }
         tvCartSumPrice.setText("合计: ￥" +sum);
         tvCartSavePrice.setText("节省: ￥" + save);
+        mAdapter.notifyDataSetChanged();
     }
     int getPrice(String price){
         int p = 0;
