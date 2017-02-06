@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.controller.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -141,6 +142,8 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                             isCollect = !isCollect;
                             setCollectStatus();
                             CommonUtils.showLongToast(result.getMsg());
+                            sendBroadcast(new Intent(I.BROADCAST_UPDATA_COLLECT)
+                                    .putExtra(I.Collect.GOODS_ID,goodsId));
                         }
                     }
 

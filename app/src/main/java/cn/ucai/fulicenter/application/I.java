@@ -1,5 +1,7 @@
 package cn.ucai.fulicenter.application;
 
+import android.content.Intent;
+
 /**
  * Created by yu chen on 2017/1/10.
  */
@@ -60,6 +62,7 @@ public interface I {
     int CAT_ID=0;
     String BROADCAST_UPDATA_CART = "cn.ucai.fulicenter.update.cart";
     int CART_CHECKED_DEFAULT = 0;
+    String BROADCAST_UPDATA_COLLECT = "cn.ucai.fulicenter.update.collect";
 
     interface Goods {
         String KEY_RESULT = "result";

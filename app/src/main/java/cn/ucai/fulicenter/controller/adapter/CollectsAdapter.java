@@ -194,7 +194,6 @@ public class CollectsAdapter extends RecyclerView.Adapter {
 
         }
 
-
     }
 
     static class FooterViewHolder extends RecyclerView.ViewHolder {
