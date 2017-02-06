@@ -131,10 +131,6 @@ public class CollectsActivity extends AppCompatActivity {
                         mAdapter.addData(list);
                         break;
                 }
-
-
-
-
             }
 
             @Override

@@ -120,7 +120,6 @@ public class CollectsAdapter extends RecyclerView.Adapter {
         if (getItemViewType(position) == TYPE_FOOTER) {
             FooterViewHolder holder1 = (FooterViewHolder) holder;
             holder1.tvFooter.setText(getFooter());
-
             return;
         }
         CollectViewHolder holder1 = (CollectViewHolder) holder;
@@ -167,14 +166,7 @@ public class CollectsAdapter extends RecyclerView.Adapter {
             ImageLoader.downloadImg(mContext, ivGoodsThume, mList.get(position).getGoodsThumb());
             tvGoodsName.setText(mList.get(position).getGoodsName());
             itemPosition = position;
-           /* itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.e("adapter", "postion=" + mList.get(position).getGoodsId());
-                    MFGT.gotoGoodsDetail(mContext, mList.get(position).getGoodsId());
 
-                }
-            });*/
         }
 
         @OnClick(R.id.layout_goods)
